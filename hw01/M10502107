@@ -1,0 +1,109 @@
+>>> from blaze import Data, by, join, transform
+>>> import numpy as np
+>>> df.shape
+##################PCA########
+>>> df=pd.read_csv( 'Dataset/train/LargeTrain.csv')
+>>> X = df.ix[:,0:1804].values
+>>> y = df.ix[:,1804].values
+>>> from sklearn.preprocessing import StandardScaler
+>>> X_std = StandardScaler().fit_transform(X)
+>>> mean_vec = np.mean(X_std, axis=0)
+>>> cov_mat = (X_std - mean_vec).T.dot((X_std - mean_vec)) / (X_std.shape[0]-1)
+>>> print('Covariance matrix \n%s' %cov_mat)
+>>> print('NumPy covariance matrix: \n%s' %np.cov(X_std.T))
+>>> cov_mat = np.cov(X_std.T)
+>>> eig_vals, eig_vecs = np.linalg.eig(cov_mat)
+>>> print('\nEigenvalues \n%s' %eig_vals)
+
+ PCA Featur Importances TOP
+(188.461243905+0j)
+(133.02499025+0j)
+(97.184329424+0j)
+(56.3722654698+0j)
+(51.409335351+0j)
+(42.5134504752+0j)
+(37.7171408799+0j)
+(34.645284912+0j)
+(32.8485779041+0j)
+(27.3767984413+0j)
+(25.1051987233+0j)
+(23.2530791107+0j)
+(21.3015675682+0j)
+(20.2472299992+0j)
+(18.740561505+0j)
+(15.9556465705+0j)
+(14.4015236533+0j)
+(13.5349635866+0j)
+(13.1912562577+0j)
+(12.7224158378+0j)
+
+##############SBS###################
+>>> from sklearn.ensemble import RandomForestClassifier
+>>> X.shape
+>>> feat_labels = df.columns[1:]
+>>> feat_labels
+>>> forest=RandomForestClassifier(n_estimators=10868,random_state=0,n_jobs=-1)
+>>> y.shape
+>>> forest.fit(X,y)
+>>> importances=forest.feature_importances_
+>>> indices=np.argsort(importances)[::-1]
+>>> for f in range(X.shape[1]):
+>>>  print("%2d) %-*s %f" % (f + 1, 30, feat_labels[f],importances[indices[f]]))
+
+
+Featur Importances TOP ten
+ 1) Offset                         0.013418
+ 2) loc                            0.008146
+ 3) Import                         0.007527
+ 4) Imports                        0.007475
+ 5) var                            0.007209
+ 6) Forwarder                      0.007125
+ 7) UINT                           0.006860
+ 8) LONG                           0.006658
+ 9) BOOL                           0.006428
+10) WORD                           0.006323
+
+Not important fetures 39
+
+1765) Img69                          0.000000
+1766) Img70                          0.000000
+1767) Img71                          0.000000
+1768) Img72                          0.000000
+1769) Img73                          0.000000
+1770) Img74                          0.000000
+1771) Img75                          0.000000
+1772) Img76                          0.000000
+1773) Img77                          0.000000
+1774) Img78                          0.000000
+1775) Img79                          0.000000
+1776) Img80                          0.000000
+1777) Img81                          0.000000
+1778) Img82                          0.000000
+1779) Img83                          0.000000
+1780) Img84                          0.000000
+1781) Img85                          0.000000
+1782) Img86                          0.000000
+1783) Img87                          0.000000
+1784) Img88                          0.000000
+1785) Img89                          0.000000
+1786) Img90                          0.000000
+1787) Img91                          0.000000
+1788) Img92                          0.000000
+1789) Img93                          0.000000
+1790) Img94                          0.000000
+1791) Img95                          0.000000
+1792) Img96                          0.000000
+1793) Img97                          0.000000
+1794) Img98                          0.000000
+1795) Img99                          0.000000
+1796) Img100                         0.000000
+1797) Img101                         0.000000
+1798) Img102                         0.000000
+1799) Img103                         0.000000
+1800) Img104                         0.000000
+1801) Img105                         0.000000
+1802) Img106                         0.000000
+1803) Img107                         0.000000
+1804) Class                          0.000000
+
+
